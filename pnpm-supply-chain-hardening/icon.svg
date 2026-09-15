@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="pnpm supply chain hardening">
+  <defs>
+    <linearGradient id="shield" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f9ad00"/>
+      <stop offset="1" stop-color="#d97a00"/>
+    </linearGradient>
+  </defs>
+  <path d="M64 6 L114 26 V62 C114 92 92 114 64 122 C36 114 14 92 14 62 V26 Z"
+        fill="url(#shield)"/>
+  <path d="M64 14 L106 31 V62 C106 87 87 106 64 113 C41 106 22 87 22 62 V31 Z"
+        fill="#1b1b1f"/>
+  <path d="M38 63 L56 81 L92 45" fill="none" stroke="#f9ad00" stroke-width="11"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
