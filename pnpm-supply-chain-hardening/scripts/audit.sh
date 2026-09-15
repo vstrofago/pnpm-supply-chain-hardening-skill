@@ -226,15 +226,28 @@ fi
 # ── 6. Filesystem leftovers from a privileged install ─────────────────────────
 section "Ownership"
 me="$(id -un)"
+# Paths that demonstrably break an install or a build when foreign-owned...
+hard_paths="node_modules .next"
+# ...and stray artifacts that are merely untidy, though they can break a build later.
+soft_paths=".pnpm-store dist build next-env.d.ts"
 found_stray=0
-for p in node_modules .next .pnpm-store dist build next-env.d.ts; do
+for p in $hard_paths; do
   [ -e "$p" ] || continue
   owner="$(file_owner "$p")"
   if [ -n "$owner" ] && [ "$owner" != "$me" ]; then
     found_stray=1
-    bad "$p is owned by \"$owner\", not \"$me\" — this blocks installs and builds"
+    bad "$p is owned by \"$owner\", not \"$me\" — this breaks installs and builds"
     hint "a past privileged run (sudo pnpm install) left it behind"
     hint "an EMPTY foreign-owned directory is removable without sudo: rmdir \"$p\""
+  fi
+done
+for p in $soft_paths; do
+  [ -e "$p" ] || continue
+  owner="$(file_owner "$p")"
+  if [ -n "$owner" ] && [ "$owner" != "$me" ]; then
+    found_stray=1
+    warn "$p is owned by \"$owner\", not \"$me\" — a leftover, not currently blocking"
+    hint "remove it when convenient; root-owned content needs sudo"
   fi
 done
 [ "$found_stray" -eq 0 ] && ok "no foreign-owned build artifacts in the project root"
